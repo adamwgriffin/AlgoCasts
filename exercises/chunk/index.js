@@ -8,12 +8,27 @@
 // chunk([1, 2, 3, 4, 5], 4) --> [[ 1, 2, 3, 4], [5]]
 // chunk([1, 2, 3, 4, 5], 10) --> [[ 1, 2, 3, 4, 5]]
 
-function chunk(array, size) {
-  let chunks = [];
-  for (let i = 0; i < array.length; i += size) {
-    chunks.push(array.slice(i, i+size));
-  }
-  return chunks;
-}
+// the fastest function tested with jsPerf (and that works from IE8):
+// function chunk(array, size) {
+//   let chunks = [];
+//   for (let i = 0; i < array.length; i += size) {
+//     chunks.push(array.slice(i, i+size));
+//   }
+//   return chunks;
+// }
+
+const chunk = (arr, size) => [...Array(Math.ceil(arr.length / size))].map((_, i) => arr.slice(i*size, i*size+size));
+
+// const chunk = (arr, size) => Array.from({ length: Math.ceil(arr.length/size) }, (_, i) => arr.slice(i*size, i*size+size));
+
+// using reduce
+// const chunk = (arr, size) => arr.reduce((acc, _, i) => (i % size) ? acc : [...acc, arr.slice(i, i+size)], []);
+
+// const chunk = (arr, size) => {
+//   return arr.reduce((acc, _, i) => {
+//     if (i % size === 0) acc.push(arr.slice(i, i + size))
+//     return acc
+//   }, [])
+// }
 
 module.exports = chunk;
