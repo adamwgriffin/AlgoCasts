@@ -8,6 +8,43 @@
 //     q.add(1);
 //     q.remove(); // returns 1;
 
-class Queue {}
+// old school class using proptypes
+function OldSchoolQueue() {
+  this.data = [];
+}
+
+OldSchoolQueue.prototype.add = function(record) {
+  this.data.unshift(record);
+}
+
+OldSchoolQueue.prototype.remove = function() {
+  return this.data.pop();
+}
+
+// object literal version
+const ObjectLiteralQueue = {
+  data: [],
+  add(record) {
+    this.data.unshift(record);
+  },
+  remove() {
+    return this.data.pop();
+  }
+}
+
+// es6 class version
+class Queue {
+  constructor() {
+    this.data = [];
+  }
+
+  add(record) {
+    this.data.unshift(record);
+  }
+
+  remove() {
+    return this.data.pop();
+  }
+}
 
 module.exports = Queue;
