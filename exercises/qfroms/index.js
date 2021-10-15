@@ -14,6 +14,36 @@
 
 const Stack = require('./stack');
 
-class Queue {}
+class Queue {
+  constructor() {
+    this.stack = new Stack();
+    this.stackReversed = new Stack();
+  }
+
+  add(item) {
+    this.stack.push(item);
+  }
+
+  popItemsOntoOtherStackReversed(fromStack, toStack) {
+    while(fromStack.peek()) {
+      toStack.push(fromStack.pop());
+    }
+  }
+
+  getItemFromBottomOfStack(opts={}) {
+    this.popItemsOntoOtherStackReversed(this.stack, this.stackReversed);
+    const item = opts.remove ? this.stackReversed.pop() : this.stackReversed.peek();
+    this.popItemsOntoOtherStackReversed(this.stackReversed, this.stack);
+    return item;
+  }
+
+  remove() {
+    return this.getItemFromBottomOfStack({ remove: true });
+  }
+
+  peek() {
+    return this.getItemFromBottomOfStack();
+  }
+}
 
 module.exports = Queue;
