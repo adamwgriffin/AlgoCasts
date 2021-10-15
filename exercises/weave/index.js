@@ -24,6 +24,22 @@
 
 const Queue = require('./queue');
 
-function weave(sourceOne, sourceTwo) {}
+// weave together as many queues as you want
+const weaveMultiple = (...queues) => {
+  const queue = new Queue();
+  while (queues.some(q => q.peek())) {
+    queues.forEach(q => q.peek() && queue.add(q.remove()));
+  }
+  return queue;
+}
+
+function weave(sourceOne, sourceTwo) {
+  const queue = new Queue();
+  while (sourceOne.peek() || sourceTwo.peek()) {
+    if (sourceOne.peek()) queue.add(sourceOne.remove());
+    if (sourceTwo.peek()) queue.add(sourceTwo.remove());
+  }
+  return queue;
+}
 
 module.exports = weave;
